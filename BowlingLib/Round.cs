@@ -6,7 +6,10 @@ namespace BowlingLib
 {
     public class Round
     {
-        public int FirstSeriesId { get; set; }
-        public int SecondSeriesId { get; set; }
+        public int RoundId { get; set; }
+        public int MatchId { get; set; }
+
+        public ICollection<Series> Series { get; set; }
+        public Match Match { get; set; }
     }
 }
