@@ -12,6 +12,7 @@ namespace BowlingLib
         public DateTime PlayedOn { get; set; }
 
         public Competition Competition { get; set; }
+        public ICollection<Round> Rounds { get; set; }
         public Lane Lane { get; set; }
     }
 }
