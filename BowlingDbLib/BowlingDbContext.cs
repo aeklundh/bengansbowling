@@ -1,5 +1,5 @@
-﻿using AccountabilityLib.Classes;
-using BowlingLib;
+﻿using AccountabilityLib.Models;
+using BowlingLib.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace BowlingDbLib

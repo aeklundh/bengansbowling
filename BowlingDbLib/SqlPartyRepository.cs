@@ -1,6 +1,6 @@
 ﻿using AccountabilityLib.Interfaces;
 using System;
-using AccountabilityLib.Classes;
+using AccountabilityLib.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
