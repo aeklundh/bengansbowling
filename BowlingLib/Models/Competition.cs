@@ -7,6 +7,7 @@ namespace BowlingLib.Models
     public class Competition
     {
         public int CompetitionId { get; set; }
+        public string Name { get; set; }
 
         public ICollection<Match> Matches { get; set; }
     }
