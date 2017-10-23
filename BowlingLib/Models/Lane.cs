@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BowlingLib
+namespace BowlingLib.Models
 {
     public class Lane
     {

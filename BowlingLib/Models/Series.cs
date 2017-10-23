@@ -1,9 +1,9 @@
-﻿using AccountabilityLib.Classes;
+﻿using AccountabilityLib.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace BowlingLib
+namespace BowlingLib.Models
 {
     public class Series
     {

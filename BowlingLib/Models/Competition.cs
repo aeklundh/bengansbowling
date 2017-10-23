@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace BowlingLib
+namespace BowlingLib.Models
 {
     public class Competition
     {
