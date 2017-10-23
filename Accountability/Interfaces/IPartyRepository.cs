@@ -1,4 +1,4 @@
-﻿using AccountabilityLib.Classes;
+﻿using AccountabilityLib.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

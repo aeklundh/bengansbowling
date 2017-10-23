@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AccountabilityLib.Classes
+namespace AccountabilityLib.Models
 {
     public class TimePeriod
     {

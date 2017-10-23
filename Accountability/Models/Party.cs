@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace AccountabilityLib.Classes
+namespace AccountabilityLib.Models
 {
     public class Party
     {

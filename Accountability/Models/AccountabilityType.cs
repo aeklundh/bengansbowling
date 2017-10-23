@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace AccountabilityLib.Classes
+namespace AccountabilityLib.Models
 {
     public class AccountabilityType
     {
