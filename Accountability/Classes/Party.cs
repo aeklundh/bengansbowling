@@ -9,5 +9,7 @@ namespace AccountabilityLib.Classes
         public int PartyId { get; set; }
         public string Name { get; set; }
         public string LegalId { get; set; }
+
+        public ICollection<Accountability> Accountabilities { get; set; }
     }
 }
