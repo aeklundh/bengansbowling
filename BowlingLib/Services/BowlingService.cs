@@ -56,6 +56,17 @@ namespace BowlingLib.Services
 
         public async void AddPlayerToMatch() { }
 
+        public async Task<Party> GetMatchWinner(int matchId)
+        {
+            Match match = await _bowlingRepository.GetMatch(matchId);
+            List<Series> allSeries = new List<Series>();
+
+            foreach (Round round in match.Rounds)
+                allSeries.AddRange(round.Series);
+
+            return allSeries.GroupBy(x => x.Player).OrderByDescending(x => x.Sum(y => y.Score)).FirstOrDefault().Key;
+        }
+
         public async Task<Competition> CreateCompetition(string name)
         {
             return await _bowlingRepository.CreateCompetition(name);
