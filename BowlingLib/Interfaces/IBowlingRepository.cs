@@ -9,6 +9,7 @@ namespace BowlingLib.Interfaces
     {
         Task<Competition> GetCompetition(int competitionId);
         Task<Match> GetMatch(int matchId);
+        Task<ICollection<Match>> GetMatchesByYear(int year);
         Task<Round> GetRound(int roundId);
         Task<Series> GetSeries(int seriesId);
         Task<ICollection<Lane>> GetAllLanes();

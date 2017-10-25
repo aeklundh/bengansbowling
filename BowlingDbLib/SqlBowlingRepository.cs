@@ -5,6 +5,8 @@ using System.Text;
 using AccountabilityLib.Models;
 using BowlingLib.Models;
 using System.Threading.Tasks;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace BowlingDbLib
 {
@@ -70,6 +72,11 @@ namespace BowlingDbLib
             _context.Matches.Add(match);
             await _context.SaveChangesAsync();
             return match;
+        }
+
+        public async Task<ICollection<Match>> GetMatchesByYear(int year)
+        {
+            return await _context.Matches.Where(x => x.PlayedOn.Year == year).ToListAsync();
         }
     }
 }

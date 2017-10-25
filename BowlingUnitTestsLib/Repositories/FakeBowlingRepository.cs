@@ -53,6 +53,11 @@ namespace BowlingUnitTestsLib.Repositories
             return await Task.FromResult(_matches.SingleOrDefault(x => x.MatchId == matchId));
         }
 
+        public async Task<ICollection<Match>> GetMatchesByYear(int year)
+        {
+            return await Task.FromResult(_matches.Where(x => x.PlayedOn.Year == year).ToList());
+        }
+
         public Task<Round> GetRound(int roundId)
         {
             throw new NotImplementedException();
