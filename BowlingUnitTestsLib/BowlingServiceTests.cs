@@ -37,5 +37,40 @@ namespace BowlingUnitTestsLib
             Assert.Equal(result.Rounds.First().Series.Count, expectedOnFirstLane);
             Assert.Equal(result.Rounds.GroupBy(x => x.Lane).Count(), expectedLanes);
         }
+
+        [Fact]
+        public void CorrectWinnerInMatch()
+        {
+            //Assemble
+            IBowlingRepository fakeProvider = new FakeBowlingRepository();
+            Party player1 = new Party() { PartyId = 1 };
+            Party player2 = new Party() { PartyId = 2 };
+            Match match = new Match()
+            {
+                MatchId = 1,
+                Rounds = new List<Round>() {
+                    new Round() {
+                        Series = new List<Series>() {
+                            new Series() { Player = player1, Score = 20 },
+                            new Series() { Player = player2, Score = 500 }
+                        }
+                    },
+                    new Round() {
+                        Series = new List<Series>() {
+                            new Series() { Player = player1, Score = 50 },
+                            new Series() { Player = player2, Score = 10 }
+                        }
+                    }
+                }
+            };
+            fakeProvider.AddMatch(match);
+            BowlingService sut = new BowlingService(fakeProvider);
+
+            //Act
+            Party result = sut.GetMatchWinner(1).Result;
+
+            //Assert
+            Assert.Same(result, player2);
+        }
     }
 }

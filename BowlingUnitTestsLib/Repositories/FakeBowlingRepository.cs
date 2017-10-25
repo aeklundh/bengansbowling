@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using BowlingLib.Models;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace BowlingUnitTestsLib.Repositories
 {
@@ -47,9 +48,9 @@ namespace BowlingUnitTestsLib.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<Match> GetMatch(int matchId)
+        public async Task<Match> GetMatch(int matchId)
         {
-            throw new NotImplementedException();
+            return await Task.FromResult(_matches.SingleOrDefault(x => x.MatchId == matchId));
         }
 
         public Task<Round> GetRound(int roundId)
