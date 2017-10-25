@@ -18,11 +18,6 @@ namespace BowlingLib.Services
             _bowlingRepository = bowlingRepository;
         }
 
-        public async Task<Match> CreateEmptyMatch()
-        {
-            return await _bowlingRepository.CreateEmptyMatch();
-        }
-
         public async Task<Match> CreateStandardMatch(ICollection<Party> players, ICollection<Lane> lanes, Competition competition = null)
         {
             if (players.Count > 1 || lanes.Count > 1)
@@ -54,8 +49,6 @@ namespace BowlingLib.Services
             return await _bowlingRepository.AddMatch(retVal);
         }
 
-        public async void AddPlayerToMatch() { }
-
         public async Task<Party> GetMatchWinner(int matchId)
         {
             Match match = await _bowlingRepository.GetMatch(matchId);
@@ -65,16 +58,6 @@ namespace BowlingLib.Services
                 allSeries.AddRange(round.Series);
 
             return allSeries.GroupBy(x => x.Player).OrderByDescending(x => x.Sum(y => y.Score)).FirstOrDefault().Key;
-        }
-
-        public async Task<Competition> CreateCompetition(string name)
-        {
-            return await _bowlingRepository.CreateCompetition(name);
-        }
-
-        public async Task<Competition> GetCompetition(int competitionId)
-        {
-            return await _bowlingRepository.GetCompetition(competitionId);
         }
     }
 }
