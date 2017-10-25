@@ -59,5 +59,10 @@ namespace BowlingLib.Services
 
             return allSeries.GroupBy(x => x.Player).OrderByDescending(x => x.Sum(y => y.Score)).FirstOrDefault().Key;
         }
+
+        public async Task<Party> GetChampionOfYear(int year)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
