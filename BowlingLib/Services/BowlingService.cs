@@ -20,7 +20,7 @@ namespace BowlingLib.Services
 
         public async Task<Match> CreateStandardMatch(ICollection<Party> players, ICollection<Lane> lanes, Competition competition = null)
         {
-            if (players.Count > 1 || lanes.Count > 1)
+            if (players.Count < 1 || lanes.Count < 1)
                 return null;
 
             List<Round> allRounds = new List<Round>();
