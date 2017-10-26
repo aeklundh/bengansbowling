@@ -60,9 +60,31 @@ namespace BowlingLib.Services
             return allSeries.GroupBy(x => x.Player).OrderByDescending(x => x.Sum(y => y.Score)).FirstOrDefault().Key;
         }
 
+        public Party GetMatchWinner(Match match)
+        {
+            List<Series> allSeries = new List<Series>();
+
+            foreach (Round round in match.Rounds)
+                allSeries.AddRange(round.Series);
+
+            return allSeries.GroupBy(x => x.Player).OrderByDescending(x => x.Sum(y => y.Score)).FirstOrDefault().Key;
+        }
+
         public async Task<Party> GetChampionOfYear(int year)
         {
-            throw new NotImplementedException();
+            ICollection<Match> matches = await _bowlingRepository.GetMatchesByYear(year);
+            List<Party> winners = new List<Party>();
+
+            foreach (Match match in matches)
+            {
+                winners.Add(GetMatchWinner(match));
+            }
+
+
+            return winners.GroupBy(x => x)
+                .Select(x => new { Value = x.Key, Count = x.Count() })
+                .OrderByDescending(x => x.Count)
+                .FirstOrDefault().Value;
         }
     }
 }
