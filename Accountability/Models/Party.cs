@@ -10,6 +10,7 @@ namespace AccountabilityLib.Models
         public string Name { get; set; }
         public string LegalId { get; set; }
 
-        public ICollection<Accountability> Accountabilities { get; set; }
+        public ICollection<Accountability> Commissions { get; set; }
+        public ICollection<Accountability> Responsibilities { get; set; }
     }
 }

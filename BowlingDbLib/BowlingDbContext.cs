@@ -18,5 +18,18 @@ namespace BowlingDbLib
 
         public BowlingDbContext(DbContextOptions<BowlingDbContext> options) : base(options)
         { }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<Accountability>().HasKey(a => new { a.AccountabilityTypeId, a.CommissionerId, a.ResponsibleId });
+
+            builder.Entity<Accountability>().HasOne(a => a.Commissioner)
+                .WithMany(r => r.Commissions)
+                .HasForeignKey(a => a.CommissionerId);
+
+            builder.Entity<Accountability>().HasOne(a => a.Responsible)
+                .WithMany(r => r.Responsibilities)
+                .HasForeignKey(a => a.ResponsibleId);
+        }
     }
 }
