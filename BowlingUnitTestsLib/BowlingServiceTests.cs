@@ -67,11 +67,24 @@ namespace BowlingUnitTestsLib
                 new Party() { Name = "Expected second" },
                 new Party() { Name = "Expected winner" }
             };
+
+            List<Party> playersFromOtherYears = new List<Party>()
+            {
+                new Party() { Name = "Expected wrong year" },
+                new Party() { Name = "Expected wrong year" },
+                new Party() { Name = "Expected wrong year" },
+                new Party() { Name = "Expected wrong year" }
+            };
+
             fakeProvider.AddMatch(BowlingTestUtility.CreateSampleMatch(1, new DateTime(1994, 01, 01), players));
             fakeProvider.AddMatch(BowlingTestUtility.CreateSampleMatch(2, new DateTime(1994, 11, 01), players));
             fakeProvider.AddMatch(BowlingTestUtility.CreateSampleMatch(3, new DateTime(1995, 05, 29), players));
+            fakeProvider.AddMatch(BowlingTestUtility.CreateSampleMatch(3, new DateTime(1995, 05, 29), playersFromOtherYears));
+            fakeProvider.AddMatch(BowlingTestUtility.CreateSampleMatch(3, new DateTime(1995, 05, 29), playersFromOtherYears));
+            fakeProvider.AddMatch(BowlingTestUtility.CreateSampleMatch(3, new DateTime(1995, 05, 29), playersFromOtherYears));
 
             BowlingService sut = new BowlingService(fakeProvider);
+
             //Act
             Party result = sut.GetChampionOfYear(1994).Result;
 
