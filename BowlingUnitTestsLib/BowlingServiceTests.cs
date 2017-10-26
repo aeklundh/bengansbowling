@@ -46,7 +46,7 @@ namespace BowlingUnitTestsLib
             IBowlingRepository fakeProvider = new FakeBowlingRepository();
             Party player1 = new Party() { PartyId = 1 };
             Party player2 = new Party() { PartyId = 2 };
-            fakeProvider.AddMatch(CreateSampleMatch(1, new DateTime(), new List<Party>() { player1, player2 }));
+            fakeProvider.AddMatch(BowlingTestUtility.CreateSampleMatch(1, new DateTime(), new List<Party>() { player1, player2 }));
             BowlingService sut = new BowlingService(fakeProvider);
 
             //Act
