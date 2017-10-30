@@ -28,6 +28,11 @@ namespace BowlingUnitTestsLib.Repositories
             throw new NotImplementedException();
         }
 
+        public Task<Lane> CreateLane(string name)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<Round> CreateRound(Match match)
         {
             throw new NotImplementedException();

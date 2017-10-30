@@ -19,9 +19,12 @@ namespace BowlingDbLib
             _context = context;
         }
 
-        public Task<Competition> CreateCompetition(string name)
+        public async Task<Competition> CreateCompetition(string name)
         {
-            throw new NotImplementedException();
+            Competition competition = new Competition() { Name = name, Matches = new List<Match>() };
+            _context.Competitions.Add(competition);
+            await _context.SaveChangesAsync();
+            return competition;
         }
 
         public async Task<Match> AddMatch(Match match)
@@ -36,34 +39,34 @@ namespace BowlingDbLib
             throw new NotImplementedException();
         }
 
-        public Task<ICollection<Lane>> GetAllLanes()
+        public async Task<ICollection<Lane>> GetAllLanes()
         {
-            throw new NotImplementedException();
+            return await _context.Lanes.ToListAsync();
         }
 
-        public Task<Competition> GetCompetition(int competitionId)
+        public async Task<Competition> GetCompetition(int competitionId)
         {
-            throw new NotImplementedException();
+            return await _context.Competitions.SingleOrDefaultAsync(x => x.CompetitionId == competitionId);
         }
 
-        public Task<Lane> GetLane(int laneId)
+        public async Task<Lane> GetLane(int laneId)
         {
-            throw new NotImplementedException();
+            return await _context.Lanes.SingleOrDefaultAsync(x => x.LaneId == laneId);
         }
 
-        public Task<Match> GetMatch(int matchId)
+        public async Task<Match> GetMatch(int matchId)
         {
-            throw new NotImplementedException();
+            return await _context.Matches.SingleOrDefaultAsync(x => x.MatchId == matchId);
         }
 
-        public Task<Round> GetRound(int roundId)
+        public async Task<Round> GetRound(int roundId)
         {
-            throw new NotImplementedException();
+            return await _context.Rounds.SingleOrDefaultAsync(x => x.RoundId == roundId);
         }
 
-        public Task<Series> GetSeries(int seriesId)
+        public async Task<Series> GetSeries(int seriesId)
         {
-            throw new NotImplementedException();
+            return await _context.Series.SingleOrDefaultAsync(x => x.SeriesId == seriesId);
         }
 
         public async Task<Match> CreateEmptyMatch()
@@ -77,6 +80,14 @@ namespace BowlingDbLib
         public async Task<ICollection<Match>> GetMatchesByYear(int year)
         {
             return await _context.Matches.Where(x => x.PlayedOn.Year == year).ToListAsync();
+        }
+
+        public async Task<Lane> CreateLane(string name)
+        {
+            Lane lane = new Lane() { Name = name };
+            _context.Lanes.Add(lane);
+            await _context.SaveChangesAsync();
+            return lane;
         }
     }
 }
