@@ -13,9 +13,7 @@ namespace BowlingIntegrationTestsLib
         public void CanCreateNewParty()
         {
             //Assemble
-            BowlingDbContext context = new BowlingDbContextFactory().CreateDbContext(new string[] { });
-            context.Database.EnsureDeleted();
-            context.Database.EnsureCreated();
+            BowlingDbContext context = new BowlingDbContextFactory().CreateInMemoryDbContext();
             SqlPartyRepository sut = new SqlPartyRepository(context);
 
             //Act
