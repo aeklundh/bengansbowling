@@ -24,10 +24,14 @@ namespace BowlingDbLib
 
         public async Task<Party> CreateParty(string name, string legalId)
         {
-            Party retVal = new Party() { Name = name, LegalId = legalId };
-            _context.Parties.Add(retVal);
+            Party exists = await _context.Parties.SingleOrDefaultAsync(x => x.LegalId == legalId);
+            if (exists != null)
+                return exists;
+
+            Party newParty = new Party() { Name = name, LegalId = legalId };
+            _context.Parties.Add(newParty);
             await _context.SaveChangesAsync();
-            return retVal;
+            return newParty;
         }
 
         public async Task<ICollection<Party>> GetAllParties()
