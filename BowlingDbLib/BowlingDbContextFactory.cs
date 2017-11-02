@@ -15,10 +15,10 @@ namespace BowlingDbLib
             return new BowlingDbContext(builder.Options);
         }
 
-        public BowlingDbContext CreateInMemoryDbContext()
+        public BowlingDbContext CreateInMemoryDbContext(string databaseName)
         {
             var builder = new DbContextOptionsBuilder<BowlingDbContext>()
-                .UseInMemoryDatabase("database");
+                .UseInMemoryDatabase(databaseName);
             BowlingDbContext context = new BowlingDbContext(builder.Options);
             context.Database.EnsureDeleted();
             context.Database.EnsureCreated();

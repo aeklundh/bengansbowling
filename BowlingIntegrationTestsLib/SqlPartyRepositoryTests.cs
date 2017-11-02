@@ -12,15 +12,17 @@ namespace BowlingIntegrationTestsLib
         [Fact]
         public void CanCreateNewParty()
         {
-            //Assemble
-            BowlingDbContext context = new BowlingDbContextFactory().CreateInMemoryDbContext();
-            SqlPartyRepository sut = new SqlPartyRepository(context);
+            using (BowlingDbContext context = new BowlingDbContextFactory().CreateInMemoryDbContext("SqlPartyRepositoryTestsDb"))
+            {
+                //Assemble
+                SqlPartyRepository sut = new SqlPartyRepository(context);
 
-            //Act
-            sut.CreateParty("aaa", "AAA").Wait();
+                //Act
+                sut.CreateParty("aaa", "AAA").Wait();
 
-            //Assert
-            Assert.NotNull(sut.GetParty("AAA").Result);
+                //Assert
+                Assert.NotNull(sut.GetParty("AAA").Result);
+            }
         }
     }
 }
