@@ -18,7 +18,7 @@ namespace BowlingLib.Services
             _bowlingRepository = bowlingRepository;
         }
 
-        public async Task<Match> CreateStandardMatch(ICollection<Party> players, ICollection<Lane> lanes, Competition competition = null)
+        public async Task<Match> CreateStandardMatch(ICollection<Party> players, ICollection<Lane> lanes, DateTime timeToPlayOn, Competition competition = null)
         {
             if (players.Count < 1 || lanes.Count < 1)
                 return null;
@@ -45,7 +45,7 @@ namespace BowlingLib.Services
                 allRounds.AddRange(rounds);
             }
 
-            Match retVal = new Match() { Rounds = allRounds.Where(x => x.Series.Any()).ToList() };
+            Match retVal = new Match() { Rounds = allRounds.Where(x => x.Series.Any()).ToList(), PlayedOn = timeToPlayOn, Competition = competition };
             return await _bowlingRepository.AddMatch(retVal);
         }
 
@@ -85,6 +85,13 @@ namespace BowlingLib.Services
                 .Select(x => new { Value = x.Key, Count = x.Count() })
                 .OrderByDescending(x => x.Count)
                 .FirstOrDefault().Value;
+        }
+
+        public async Task RegisterScores(int seriesId, short score)
+        {
+            Series series = await _bowlingRepository.GetSeries(seriesId);
+            series.Score = score;
+            await _bowlingRepository.UpdateSeries(series);
         }
     }
 }

@@ -32,7 +32,7 @@ namespace BowlingUnitTestsLib
                 lanes.Add(new Lane());
 
             //Act
-            Match result = sut.CreateStandardMatch(players, lanes).Result;
+            Match result = sut.CreateStandardMatch(players, lanes, new DateTime()).Result;
 
             //Assert
             Assert.Equal(result.Rounds.First().Series.Count, expectedOnFirstLane);
