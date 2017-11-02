@@ -89,5 +89,11 @@ namespace BowlingDbLib
             await _context.SaveChangesAsync();
             return lane;
         }
+
+        public async Task UpdateSeries(Series series)
+        {
+            _context.Series.Update(series);
+            await _context.SaveChangesAsync();
+        }
     }
 }

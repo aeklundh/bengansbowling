@@ -20,5 +20,6 @@ namespace BowlingLib.Interfaces
         Task<Match> AddMatch(Match match);
         Task<Round> CreateRound(Match match);
         Task<Lane> CreateLane(string name);
+        Task UpdateSeries(Series series);
     }
 }

@@ -72,5 +72,10 @@ namespace BowlingUnitTestsLib.Repositories
         {
             throw new NotImplementedException();
         }
+
+        public Task UpdateSeries(Series series)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
