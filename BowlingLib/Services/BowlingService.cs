@@ -70,6 +70,27 @@ namespace BowlingLib.Services
             return allSeries.GroupBy(x => x.Player).OrderByDescending(x => x.Sum(y => y.Score)).FirstOrDefault().Key;
         }
 
+        public async Task<Party> GetCompetitionWinner(int competitionId)
+        {
+            Competition competition = await _bowlingRepository.GetCompetition(competitionId);
+            Dictionary<Party, int> winners = new Dictionary<Party, int>();
+            foreach (Match match in competition.Matches)
+            {
+                Party winner = GetMatchWinner(match);
+                Party winnerExists = winners.FirstOrDefault(x => x.Key == winner).Key;
+                if (winnerExists != null)
+                    winners[winnerExists]++;
+                else
+                    winners.Add(winner, 1);
+            }
+
+            //if it's a draw, return null
+            if (winners.Count(x => x.Value == winners.Max(y => y.Value)) > 1)
+                return null;
+
+            return winners.OrderByDescending(x => x.Value).FirstOrDefault().Key;
+        }
+
         public async Task<Party> GetChampionOfYear(int year)
         {
             ICollection<Match> matches = await _bowlingRepository.GetMatchesByYear(year);
@@ -79,7 +100,6 @@ namespace BowlingLib.Services
             {
                 winners.Add(GetMatchWinner(match));
             }
-
 
             return winners.GroupBy(x => x)
                 .Select(x => new { Value = x.Key, Count = x.Count() })
