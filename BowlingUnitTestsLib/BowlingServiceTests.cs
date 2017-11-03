@@ -91,5 +91,27 @@ namespace BowlingUnitTestsLib
             //Assert
             Assert.Equal("Expected winner", result.Name);
         }
+
+        [Fact]
+        public void CanRegisterScore()
+        {
+            //Assemble
+            IBowlingRepository fakeProvider = new FakeBowlingRepository();
+            Match match = new Match()
+            {
+                Rounds = new List<Round>()
+                {
+                    new Round() { Series = new List<Series>() { new Series() { SeriesId = 1 } } }
+                }
+            };
+            fakeProvider.AddMatch(match);
+            BowlingService sut = new BowlingService(fakeProvider);
+
+            //Act
+            sut.RegisterScores(1, 500).Wait();
+
+            //Assert
+            Assert.Equal(500, fakeProvider.GetSeries(1).Result.Score);
+        }
     }
 }

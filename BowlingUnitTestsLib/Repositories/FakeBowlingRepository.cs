@@ -70,12 +70,20 @@ namespace BowlingUnitTestsLib.Repositories
 
         public Task<Series> GetSeries(int seriesId)
         {
-            throw new NotImplementedException();
+            foreach (Match match in _matches)
+            {
+                Round round = match.Rounds.SingleOrDefault(x => x.Series.Any(y => y.SeriesId == seriesId));
+                if (round != null)
+                {
+                    return Task.FromResult(round.Series.SingleOrDefault(x => x.SeriesId == seriesId));
+                }
+            }
+            return Task.FromResult<Series>(null);
         }
 
         public Task UpdateSeries(Series series)
         {
-            throw new NotImplementedException();
+            return Task.CompletedTask;
         }
     }
 }
