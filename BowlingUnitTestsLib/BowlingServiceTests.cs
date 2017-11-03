@@ -113,5 +113,24 @@ namespace BowlingUnitTestsLib
             //Assert
             Assert.Equal(500, fakeProvider.GetSeries(1).Result.Score);
         }
+
+        [Fact]
+        public void CorrectWinnerInCompetition()
+        {
+            //Assemble
+            IBowlingRepository fakeProvider = new FakeBowlingRepository();
+            Party player1 = new Party() { PartyId = 1 };
+            Party player2 = new Party() { PartyId = 2 };
+            Competition competition = fakeProvider.CreateCompetition("test").Result;
+            competition.Matches = new List<Match>() { BowlingTestUtility.CreateSampleMatch(1, new DateTime(), new List<Party>() { player1, player2 }, competition) };
+
+            BowlingService sut = new BowlingService(fakeProvider);
+
+            //Act
+            Party result = sut.GetCompetitionWinner(1).Result;
+
+            //Assert
+            Assert.Same(player2, result);
+        }
     }
 }

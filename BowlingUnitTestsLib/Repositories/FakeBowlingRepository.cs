@@ -11,6 +11,7 @@ namespace BowlingUnitTestsLib.Repositories
     public class FakeBowlingRepository : IBowlingRepository
     {
         private List<Match> _matches { get; set; } = new List<Match>();
+        private List<Competition> _competitions { get; set; } = new List<Competition>();
 
         public async Task<Match> AddMatch(Match match)
         {
@@ -20,7 +21,13 @@ namespace BowlingUnitTestsLib.Repositories
 
         public Task<Competition> CreateCompetition(string name)
         {
-            throw new NotImplementedException();
+            int id = 1;
+            if (_competitions.Any())
+                id = _competitions.OrderByDescending(x => x.CompetitionId).First().CompetitionId + 1;
+
+            Competition retVal = new Competition() { Name = name, CompetitionId = id };
+            _competitions.Add(retVal);
+            return Task.FromResult(retVal);
         }
 
         public Task<Match> CreateEmptyMatch()
@@ -45,7 +52,7 @@ namespace BowlingUnitTestsLib.Repositories
 
         public Task<Competition> GetCompetition(int competitionId)
         {
-            throw new NotImplementedException();
+            return Task.FromResult(_competitions.FirstOrDefault(x => x.CompetitionId == competitionId));
         }
 
         public Task<Lane> GetLane(int laneId)
