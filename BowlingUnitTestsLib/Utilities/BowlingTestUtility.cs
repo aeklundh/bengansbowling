@@ -9,7 +9,7 @@ namespace BowlingUnitTestsLib.Utilities
     public static class BowlingTestUtility
     {
         //the last player gets the highest score in every round
-        public static Match CreateSampleMatch(int matchId, DateTime playedOn, List<Party> players)
+        public static Match CreateSampleMatch(int matchId, DateTime playedOn, List<Party> players, Competition competition = null)
         {
             Match match = new Match()
             {
@@ -19,7 +19,8 @@ namespace BowlingUnitTestsLib.Utilities
                     new Round() { Series = new List<Series>() },
                     new Round() { Series = new List<Series>() }
                 },
-                PlayedOn = playedOn
+                PlayedOn = playedOn,
+                Competition = competition
             };
 
             for (short i = 0; i < players.Count; i++)
