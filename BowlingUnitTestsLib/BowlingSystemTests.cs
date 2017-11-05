@@ -11,7 +11,7 @@ using Xunit;
 
 namespace BowlingUnitTestsLib
 {
-    public class BowlingServiceTests
+    public class BowlingSystemTests
     {
         [Theory]
         [InlineData(2, 2, 1, 2)]
@@ -21,7 +21,7 @@ namespace BowlingUnitTestsLib
         {
             //Assemble
             IBowlingRepository fakeProvider = new FakeBowlingRepository();
-            BowlingService sut = new BowlingService(fakeProvider);
+            BowlingSystem sut = new BowlingSystem(fakeProvider, "benganLegalId");
             ICollection<Party> players = new List<Party>();
             ICollection<Lane> lanes = new List<Lane>();
 
@@ -47,7 +47,7 @@ namespace BowlingUnitTestsLib
             Party player1 = new Party() { PartyId = 1 };
             Party player2 = new Party() { PartyId = 2 };
             fakeProvider.AddMatch(BowlingTestUtility.CreateSampleMatch(1, new DateTime(), new List<Party>() { player1, player2 }));
-            BowlingService sut = new BowlingService(fakeProvider);
+            BowlingSystem sut = new BowlingSystem(fakeProvider, "benganLegalId");
 
             //Act
             Party result = sut.GetMatchWinner(1).Result;
@@ -83,7 +83,7 @@ namespace BowlingUnitTestsLib
             fakeProvider.AddMatch(BowlingTestUtility.CreateSampleMatch(3, new DateTime(1995, 05, 29), playersFromOtherYears));
             fakeProvider.AddMatch(BowlingTestUtility.CreateSampleMatch(3, new DateTime(1995, 05, 29), playersFromOtherYears));
 
-            BowlingService sut = new BowlingService(fakeProvider);
+            BowlingSystem sut = new BowlingSystem(fakeProvider, "benganLegalId");
 
             //Act
             Party result = sut.GetChampionOfYear(1994).Result;
@@ -105,7 +105,7 @@ namespace BowlingUnitTestsLib
                 }
             };
             fakeProvider.AddMatch(match);
-            BowlingService sut = new BowlingService(fakeProvider);
+            BowlingSystem sut = new BowlingSystem(fakeProvider, "benganLegalId");
 
             //Act
             sut.RegisterScores(1, 500).Wait();
@@ -124,7 +124,7 @@ namespace BowlingUnitTestsLib
             Competition competition = fakeProvider.CreateCompetition("test").Result;
             competition.Matches = new List<Match>() { BowlingTestUtility.CreateSampleMatch(1, new DateTime(), new List<Party>() { player1, player2 }, competition) };
 
-            BowlingService sut = new BowlingService(fakeProvider);
+            BowlingSystem sut = new BowlingSystem(fakeProvider, "benganLegalId");
 
             //Act
             Party result = sut.GetCompetitionWinner(1).Result;

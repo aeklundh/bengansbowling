@@ -9,13 +9,15 @@ using System.Threading.Tasks;
 
 namespace BowlingLib.Services
 {
-    public class BowlingService
+    public class BowlingSystem
     {
         private readonly IBowlingRepository _bowlingRepository;
+        private readonly string _accountabilityOrigin;
 
-        public BowlingService(IBowlingRepository bowlingRepository)
+        public BowlingSystem(IBowlingRepository bowlingRepository, string accountabilityOrigin)
         {
             _bowlingRepository = bowlingRepository;
+            _accountabilityOrigin = accountabilityOrigin;
         }
 
         public async Task<Match> CreateStandardMatch(ICollection<Party> players, ICollection<Lane> lanes, DateTime timeToPlayOn, Competition competition = null)

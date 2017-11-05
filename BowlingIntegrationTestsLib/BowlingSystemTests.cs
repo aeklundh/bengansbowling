@@ -10,7 +10,7 @@ using Xunit.Abstractions;
 
 namespace BowlingIntegrationTestsLib
 {
-    public class BowlingServiceTests
+    public class BowlingSustemTests
     {
         [Fact]
         public void CanCreateDrawScenarioFromScratch()
@@ -19,7 +19,7 @@ namespace BowlingIntegrationTestsLib
             BowlingDbContext context = new BowlingDbContextFactory().CreateInMemoryDbContext("BowlingServiceTestsDb");
             SqlPartyRepository partyRepository = new SqlPartyRepository(context);
             SqlBowlingRepository bowlingRepository = new SqlBowlingRepository(context);
-            BowlingService bowlingService = new BowlingService(bowlingRepository);
+            BowlingSystem bowlingService = new BowlingSystem(bowlingRepository, "benganLegalId");
 
             List<Party> players = new List<Party>
             {
