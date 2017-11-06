@@ -17,9 +17,31 @@ namespace BowlingDbLib
             _context = context;
         }
 
-        public async void CreateAccountability(Party commissioner, Party responsible, AccountabilityType type, DateTime? start = null, DateTime? end = null)
+        public async Task CreateAccountability(Party commissioner, Party responsible, AccountabilityType type, DateTime? start = null, DateTime? end = null)
         {
-            throw new NotImplementedException();
+            if (start == null || end == null)
+            {
+                _context.Accountabilities.Add(new Accountability() { Commissioner = commissioner, Responsible = responsible, AccountabilityType = type });
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                _context.Accountabilities.Add(new Accountability() { Commissioner = commissioner, Responsible = responsible, AccountabilityType = type, TimePeriod = new TimePeriod() { StartTime = (DateTime)start, EndTime = (DateTime)end } });
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        public async Task<AccountabilityType> CreateAccountabilityType(string name)
+        {
+            AccountabilityType type = await _context.AccountabilityTypes.SingleOrDefaultAsync(x => x.Description == name);
+            if (type == null)
+            {
+                type = new AccountabilityType() { Description = name };
+                _context.AccountabilityTypes.Add(type);
+                await _context.SaveChangesAsync();
+            }
+
+            return type;
         }
 
         public async Task<Party> CreateParty(string name, string legalId)
@@ -32,6 +54,11 @@ namespace BowlingDbLib
             _context.Parties.Add(newParty);
             await _context.SaveChangesAsync();
             return newParty;
+        }
+
+        public async Task<AccountabilityType> GetAccountabilityType(string name)
+        {
+            return await _context.AccountabilityTypes.FirstOrDefaultAsync(x => x.Description == name);
         }
 
         public async Task<ICollection<Party>> GetAllParties()
