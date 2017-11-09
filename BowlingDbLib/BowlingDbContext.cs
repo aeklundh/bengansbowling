@@ -30,6 +30,12 @@ namespace BowlingDbLib
             builder.Entity<Accountability>().HasOne(a => a.Responsible)
                 .WithMany(r => r.Responsibilities)
                 .HasForeignKey(a => a.ResponsibleId);
+
+            builder.Entity<LaneTimePeriod>().HasKey(ltp => new { ltp.LaneId, ltp.TimePeriodId });
+
+            builder.Entity<LaneTimePeriod>().HasOne(ltp => ltp.Lane)
+                .WithMany(l => l.LaneTimePeriods)
+                .HasForeignKey(ltp => ltp.LaneId);
         }
     }
 }

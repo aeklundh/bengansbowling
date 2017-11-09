@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace BowlingLib.Models
 {
@@ -7,5 +8,7 @@ namespace BowlingLib.Models
         public int LaneId { get; set; }
         [Required]
         public string Name { get; set; }
+
+        public ICollection<LaneTimePeriod> LaneTimePeriods { get; set; }
     }
 }
