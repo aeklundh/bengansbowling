@@ -5,6 +5,7 @@ using System.Text;
 using BowlingLib.Models;
 using System.Threading.Tasks;
 using System.Linq;
+using AccountabilityLib.Models;
 
 namespace BowlingUnitTestsLib.Repositories
 {
@@ -12,6 +13,14 @@ namespace BowlingUnitTestsLib.Repositories
     {
         private List<Match> _matches { get; set; } = new List<Match>();
         private List<Competition> _competitions { get; set; } = new List<Competition>();
+        private List<Lane> _lanes { get; set; } = new List<Lane>();
+        private List<TimePeriod> _timePeriods { get; set; } = new List<TimePeriod>();
+
+        public Task AddLane(Lane lane)
+        {
+            _lanes.Add(lane);
+            return Task.CompletedTask;
+        }
 
         public async Task<Match> AddMatch(Match match)
         {
@@ -37,7 +46,12 @@ namespace BowlingUnitTestsLib.Repositories
 
         public Task<Lane> CreateLane(string name)
         {
-            throw new NotImplementedException();
+            Lane newLane = new Lane() { LaneId = 1, Name = name };
+            Lane previousTopId = _lanes.OrderByDescending(x => x.LaneId).FirstOrDefault();
+            if (previousTopId != null)
+                newLane.LaneId = previousTopId.LaneId + 1;
+
+            return Task.FromResult(newLane);
         }
 
         public Task<Round> CreateRound(Match match)
@@ -47,7 +61,7 @@ namespace BowlingUnitTestsLib.Repositories
 
         public Task<ICollection<Lane>> GetAllLanes()
         {
-            throw new NotImplementedException();
+            return Task.FromResult((ICollection<Lane>)_lanes);
         }
 
         public Task<Competition> GetCompetition(int competitionId)
@@ -57,7 +71,7 @@ namespace BowlingUnitTestsLib.Repositories
 
         public Task<Lane> GetLane(int laneId)
         {
-            throw new NotImplementedException();
+            return Task.FromResult(_lanes.SingleOrDefault(x => x.LaneId == laneId));
         }
 
         public async Task<Match> GetMatch(int matchId)
@@ -86,6 +100,16 @@ namespace BowlingUnitTestsLib.Repositories
                 }
             }
             return Task.FromResult<Series>(null);
+        }
+
+        public Task<TimePeriod> GetTimePeriod(DateTime startTime, DateTime endTime)
+        {
+            return Task.FromResult(_timePeriods.SingleOrDefault(x => x.StartTime == startTime && x.EndTime == endTime));
+        }
+
+        public Task UpdateLane(Lane lane)
+        {
+            return Task.CompletedTask;
         }
 
         public Task UpdateSeries(Series series)

@@ -41,7 +41,10 @@ namespace BowlingDbLib
 
         public async Task<ICollection<Lane>> GetAllLanes()
         {
-            return await _context.Lanes.ToListAsync();
+            return await _context.Lanes
+                .Include(x => x.LaneTimePeriods)
+                .ThenInclude(x => x.TimePeriod)
+                .ToListAsync();
         }
 
         public async Task<Competition> GetCompetition(int competitionId)
@@ -56,7 +59,10 @@ namespace BowlingDbLib
 
         public async Task<Lane> GetLane(int laneId)
         {
-            return await _context.Lanes.SingleOrDefaultAsync(x => x.LaneId == laneId);
+            return await _context.Lanes
+                .Include(x => x.LaneTimePeriods)
+                .ThenInclude(x => x.TimePeriod)
+                .SingleOrDefaultAsync(x => x.LaneId == laneId);
         }
 
         public async Task<Match> GetMatch(int matchId)
@@ -113,6 +119,22 @@ namespace BowlingDbLib
         {
             _context.Series.Update(series);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<TimePeriod> GetTimePeriod(DateTime startTime, DateTime endTime)
+        {
+            return await _context.TimePeriods.SingleOrDefaultAsync(x => x.StartTime == startTime && x.EndTime == endTime);
+        }
+
+        public async Task UpdateLane(Lane lane)
+        {
+            _context.Lanes.Update(lane);
+            await _context.SaveChangesAsync();
+        }
+
+        public Task AddLane(Lane lane)
+        {
+            throw new NotImplementedException();
         }
     }
 }
