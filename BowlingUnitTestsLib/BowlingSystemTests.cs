@@ -21,7 +21,7 @@ namespace BowlingUnitTestsLib
         {
             //Assemble
             IBowlingRepository fakeProvider = new FakeBowlingRepository();
-            BowlingSystem sut = new BowlingSystem(fakeProvider, "benganLegalId");
+            BowlingSystem sut = new BowlingSystem(fakeProvider);
             ICollection<Party> players = new List<Party>();
             ICollection<Lane> lanes = new List<Lane>();
 
@@ -47,7 +47,7 @@ namespace BowlingUnitTestsLib
             Party player1 = new Party() { PartyId = 1 };
             Party player2 = new Party() { PartyId = 2 };
             fakeProvider.AddMatch(BowlingTestUtility.CreateSampleMatch(1, new DateTime(), new List<Party>() { player1, player2 }));
-            BowlingSystem sut = new BowlingSystem(fakeProvider, "benganLegalId");
+            BowlingSystem sut = new BowlingSystem(fakeProvider);
 
             //Act
             Party result = sut.GetMatchWinner(1).Result;
@@ -83,7 +83,7 @@ namespace BowlingUnitTestsLib
             fakeProvider.AddMatch(BowlingTestUtility.CreateSampleMatch(3, new DateTime(1995, 05, 29), playersFromOtherYears));
             fakeProvider.AddMatch(BowlingTestUtility.CreateSampleMatch(3, new DateTime(1995, 05, 29), playersFromOtherYears));
 
-            BowlingSystem sut = new BowlingSystem(fakeProvider, "benganLegalId");
+            BowlingSystem sut = new BowlingSystem(fakeProvider);
 
             //Act
             Party result = sut.GetChampionOfYear(1994).Result;
@@ -105,7 +105,7 @@ namespace BowlingUnitTestsLib
                 }
             };
             fakeProvider.AddMatch(match);
-            BowlingSystem sut = new BowlingSystem(fakeProvider, "benganLegalId");
+            BowlingSystem sut = new BowlingSystem(fakeProvider);
 
             //Act
             sut.RegisterScores(1, 500).Wait();
@@ -124,7 +124,7 @@ namespace BowlingUnitTestsLib
             Competition competition = fakeProvider.CreateCompetition("test").Result;
             competition.Matches = new List<Match>() { BowlingTestUtility.CreateSampleMatch(1, new DateTime(), new List<Party>() { player1, player2 }, competition) };
 
-            BowlingSystem sut = new BowlingSystem(fakeProvider, "benganLegalId");
+            BowlingSystem sut = new BowlingSystem(fakeProvider);
 
             //Act
             Party result = sut.GetCompetitionWinner(1).Result;
@@ -138,7 +138,7 @@ namespace BowlingUnitTestsLib
         {
             //Assemble
             IBowlingRepository fakeProvider = new FakeBowlingRepository();
-            BowlingSystem sut = new BowlingSystem(fakeProvider, "bengansLegalId");
+            BowlingSystem sut = new BowlingSystem(fakeProvider);
             DateTime start = new DateTime(1994, 01, 01, 12, 00, 00);
             DateTime end = new DateTime(1994, 01, 01, 13, 00, 00);
             TimePeriod bookedTime = new TimePeriod() { StartTime = start, EndTime = end };
@@ -163,7 +163,7 @@ namespace BowlingUnitTestsLib
         {
             //Assemble
             IBowlingRepository fakeProvider = new FakeBowlingRepository();
-            BowlingSystem sut = new BowlingSystem(fakeProvider, "bengansLegalId");
+            BowlingSystem sut = new BowlingSystem(fakeProvider);
             DateTime start = new DateTime(1994, 01, 01, 12, 00, 00);
             DateTime end = new DateTime(1994, 01, 01, 13, 00, 00);
             TimePeriod bookedTime = new TimePeriod() { StartTime = start, EndTime = end };

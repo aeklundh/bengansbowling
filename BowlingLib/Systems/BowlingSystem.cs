@@ -12,12 +12,10 @@ namespace BowlingLib.Services
     public class BowlingSystem
     {
         private readonly IBowlingRepository _bowlingRepository;
-        private readonly string _accountabilityOrigin;
 
-        public BowlingSystem(IBowlingRepository bowlingRepository, string accountabilityOrigin)
+        public BowlingSystem(IBowlingRepository bowlingRepository)
         {
             _bowlingRepository = bowlingRepository;
-            _accountabilityOrigin = accountabilityOrigin;
         }
 
         public async Task<Match> CreateStandardMatch(ICollection<Party> players, ICollection<Lane> lanes, DateTime timeToPlayOn, Competition competition = null)

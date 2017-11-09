@@ -19,7 +19,7 @@ namespace BowlingIntegrationTestsLib
             BowlingDbContext context = new BowlingDbContextFactory().CreateInMemoryDbContext("BowlingServiceTestsDb");
             SqlPartyRepository partyRepository = new SqlPartyRepository(context);
             SqlBowlingRepository bowlingRepository = new SqlBowlingRepository(context);
-            BowlingSystem bowlingService = new BowlingSystem(bowlingRepository, "benganLegalId");
+            BowlingSystem bowlingService = new BowlingSystem(bowlingRepository);
 
             List<Party> players = new List<Party>
             {
