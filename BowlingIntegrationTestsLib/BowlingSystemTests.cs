@@ -10,7 +10,7 @@ using Xunit.Abstractions;
 
 namespace BowlingIntegrationTestsLib
 {
-    public class BowlingSustemTests
+    public class BowlingSystemTests
     {
         [Fact]
         public void CanCreateDrawScenarioFromScratch()
