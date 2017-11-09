@@ -57,7 +57,7 @@ namespace BowlingUnitTestsLib
         }
 
         [Fact]
-        public void CorrectChampionOfYear()
+        public void CorrectWinCountChampionOfYear()
         {
             //Assemble
             IBowlingRepository fakeProvider = new FakeBowlingRepository();
@@ -86,7 +86,45 @@ namespace BowlingUnitTestsLib
             BowlingSystem sut = new BowlingSystem(fakeProvider);
 
             //Act
-            Party result = sut.GetChampionOfYear(1994).Result;
+            Party result = sut.GetWinCountChampionOfYear(1994).Result;
+
+            //Assert
+            Assert.Equal("Expected winner", result.Name);
+        }
+
+        [Fact]
+        public void CorrectWinRateChampionOfYear()
+        {
+            //Assemble
+            IBowlingRepository fakeProvider = new FakeBowlingRepository();
+            Party winner = new Party() { Name = "Expected winner" };
+            Party second = new Party() { Name = "Expected second" };
+            Party third = new Party() { Name = "Expected third" };
+
+            List<Party> playerList1 = new List<Party>() { third, second, winner };
+            List<Party> playerList2 = new List<Party>() { winner, third, second};
+
+            List<Party> playersFromOtherYears = new List<Party>()
+            {
+                new Party() { Name = "Expected wrong year" },
+                new Party() { Name = "Expected wrong year" },
+                new Party() { Name = "Expected wrong year" },
+                new Party() { Name = "Expected wrong year" }
+            };
+
+            fakeProvider.AddMatch(BowlingTestUtility.CreateSampleMatch(1, new DateTime(1994, 01, 01), playerList1)); //winner wins
+            fakeProvider.AddMatch(BowlingTestUtility.CreateSampleMatch(2, new DateTime(1994, 11, 01), playerList1)); //winner wins
+            fakeProvider.AddMatch(BowlingTestUtility.CreateSampleMatch(3, new DateTime(1994, 11, 01), playerList1)); //winner wins
+            fakeProvider.AddMatch(BowlingTestUtility.CreateSampleMatch(4, new DateTime(1994, 11, 01), playerList2)); //
+            fakeProvider.AddMatch(BowlingTestUtility.CreateSampleMatch(5, new DateTime(1995, 05, 29), playerList1));
+            fakeProvider.AddMatch(BowlingTestUtility.CreateSampleMatch(6, new DateTime(1995, 05, 29), playersFromOtherYears));
+            fakeProvider.AddMatch(BowlingTestUtility.CreateSampleMatch(7, new DateTime(1995, 05, 29), playersFromOtherYears));
+            fakeProvider.AddMatch(BowlingTestUtility.CreateSampleMatch(8, new DateTime(1995, 05, 29), playersFromOtherYears));
+
+            BowlingSystem sut = new BowlingSystem(fakeProvider);
+
+            //Act
+            Party result = sut.GetWinRateChampionOfYear(1994).Result;
 
             //Assert
             Assert.Equal("Expected winner", result.Name);

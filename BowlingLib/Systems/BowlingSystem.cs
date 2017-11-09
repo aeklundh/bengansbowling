@@ -91,7 +91,7 @@ namespace BowlingLib.Services
             return winners.OrderByDescending(x => x.Value).FirstOrDefault().Key;
         }
 
-        public async Task<Party> GetChampionOfYear(int year)
+        public async Task<Party> GetWinCountChampionOfYear(int year)
         {
             ICollection<Match> matches = await _bowlingRepository.GetMatchesByYear(year);
             List<Party> winners = new List<Party>();
@@ -105,6 +105,43 @@ namespace BowlingLib.Services
                 .Select(x => new { Value = x.Key, Count = x.Count() })
                 .OrderByDescending(x => x.Count)
                 .FirstOrDefault().Value;
+        }
+
+        public async Task<Party> GetWinRateChampionOfYear(int year)
+        {
+            ICollection<Match> matches = await _bowlingRepository.GetMatchesByYear(year);
+
+            List<PlayerWinLossContainer> winRatios = new List<PlayerWinLossContainer>();
+            foreach (Match match in matches)
+            {
+                //match winner
+                Party winner = GetMatchWinner(match);
+                PlayerWinLossContainer winRatio = winRatios.FirstOrDefault(x => x.Player == winner);
+                if (winRatio != null)
+                    winRatio.Wins++;
+                else
+                    winRatios.Add(new PlayerWinLossContainer() { Player = winner, Wins = 1, Losses = 0 });
+
+                //match losers
+                List<Party> matchLosers = new List<Party>();
+                foreach (Round round in match.Rounds)
+                {
+                    foreach (Series series in round.Series)
+                        if (series.Player != winner && !matchLosers.Contains(series.Player))
+                            matchLosers.Add(series.Player);
+                }
+
+                foreach (Party loser in matchLosers)
+                {
+                    PlayerWinLossContainer loserWinRatio = winRatios.FirstOrDefault(x => x.Player == loser);
+                    if (loserWinRatio != null)
+                        loserWinRatio.Losses++;
+                    else
+                        winRatios.Add(new PlayerWinLossContainer() { Player = loser, Wins = 0, Losses = 1 });
+                }
+            }
+            
+            return winRatios.OrderByDescending(x => x.WinPercentage).FirstOrDefault()?.Player;
         }
 
         public async Task RegisterScores(int seriesId, short score)
