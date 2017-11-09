@@ -132,5 +132,59 @@ namespace BowlingUnitTestsLib
             //Assert
             Assert.Same(player2, result);
         }
+
+        [Fact]
+        public void GetVacantLanesProperly()
+        {
+            //Assemble
+            IBowlingRepository fakeProvider = new FakeBowlingRepository();
+            BowlingSystem sut = new BowlingSystem(fakeProvider, "bengansLegalId");
+            DateTime start = new DateTime(1994, 01, 01, 12, 00, 00);
+            DateTime end = new DateTime(1994, 01, 01, 13, 00, 00);
+            TimePeriod bookedTime = new TimePeriod() { StartTime = start, EndTime = end };
+            Lane aaa = new Lane() { LaneId = 1, Name = "aaa", LaneTimePeriods = new List<LaneTimePeriod>() {
+                new LaneTimePeriod() { TimePeriod = bookedTime }
+            }};
+            Lane bbb = new Lane() { LaneId = 1, Name = "bbb", LaneTimePeriods = new List<LaneTimePeriod>() };
+            Lane ccc = new Lane() { LaneId = 1, Name = "ccc", LaneTimePeriods = new List<LaneTimePeriod>() };
+            fakeProvider.AddLane(aaa);
+            fakeProvider.AddLane(bbb);
+            fakeProvider.AddLane(ccc);
+
+            //Act
+            ICollection<Lane> result = sut.GetVacantLanes(start, end).Result;
+
+            //Assert
+            Assert.True(result.Count == 2);
+        }
+
+        [Fact]
+        public void CanBookLane()
+        {
+            //Assemble
+            IBowlingRepository fakeProvider = new FakeBowlingRepository();
+            BowlingSystem sut = new BowlingSystem(fakeProvider, "bengansLegalId");
+            DateTime start = new DateTime(1994, 01, 01, 12, 00, 00);
+            DateTime end = new DateTime(1994, 01, 01, 13, 00, 00);
+            TimePeriod bookedTime = new TimePeriod() { StartTime = start, EndTime = end };
+            Lane aaa = new Lane()
+            {
+                LaneId = 1,
+                Name = "aaa",
+                LaneTimePeriods = new List<LaneTimePeriod>()
+                {
+                    new LaneTimePeriod() { TimePeriod = bookedTime }
+                }
+            };
+            Lane bbb = new Lane() { LaneId = 2, Name = "bbb", LaneTimePeriods = new List<LaneTimePeriod>() };
+            fakeProvider.AddLane(aaa);
+            fakeProvider.AddLane(bbb);
+
+            //Act & assert
+            Assert.False(sut.BookLane(1, start, end).Result);
+            Assert.False(sut.BookLane(1, start.AddHours(-1), end).Result);
+            Assert.True(sut.BookLane(1, new DateTime(), new DateTime()).Result);
+            Assert.True(sut.BookLane(2, start, end).Result);
+        }
     }
 }

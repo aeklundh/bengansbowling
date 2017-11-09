@@ -115,5 +115,31 @@ namespace BowlingLib.Services
             series.Score = score;
             await _bowlingRepository.UpdateSeries(series);
         }
+
+        public async Task<ICollection<Lane>> GetVacantLanes(DateTime startTime, DateTime endTime)
+        {
+            ICollection<Lane> allLanes = await _bowlingRepository.GetAllLanes();
+            return allLanes.Where(x =>
+                !x.LaneTimePeriods.Any(y
+                    => y.TimePeriod.StartTime <= startTime
+                    && y.TimePeriod.EndTime >= endTime)).ToList();
+        }
+
+        public async Task<bool> BookLane(int laneId, DateTime startTime, DateTime endTime)
+        {
+            Lane lane = await _bowlingRepository.GetLane(laneId);
+            if (lane != null && !lane.LaneTimePeriods.Any(y => y.TimePeriod.StartTime >= startTime && y.TimePeriod.EndTime <= endTime))
+            {
+                TimePeriod timePeriod = await _bowlingRepository.GetTimePeriod(startTime, endTime);
+                if (timePeriod == null)
+                    timePeriod = new TimePeriod() { StartTime = startTime, EndTime = endTime };
+
+                lane.LaneTimePeriods.Add(new LaneTimePeriod() { TimePeriod = timePeriod });
+                await _bowlingRepository.UpdateLane(lane);
+                return true;
+            }
+
+            return false;
+        }
     }
 }
